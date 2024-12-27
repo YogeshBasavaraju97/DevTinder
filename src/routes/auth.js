@@ -43,6 +43,7 @@ authRoutes.post('/login', async (req, res) => {
     //check the user if available in database
 
     const user = await User.findOne({ emailId: emailId });
+    console.log(user.password);
 
     if (!user) {
       throw new Error('invalid credentials');
