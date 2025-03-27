@@ -74,11 +74,10 @@ userRoutes.get('/user/connections', userAuth, async (req, res) => {
 
     try {
       const loggedInUser = req.user;
+      // ✅ Corrected limit definition
       const page = parseInt(req.query.page) || 1;
-      const limit = parseInt(req.query.limit) || 10;
-      limit = limit > 50 ? 50 : limit;
-
-      const skip = (page - 1) * 10;
+      const limit = Math.min(parseInt(req.query.limit) || 10, 50);
+      const skip = (page - 1) * limit; // ✅ Used correct limit variable
 
       const hideConnections = await connectionRequests
         .find({
@@ -94,19 +93,19 @@ userRoutes.get('/user/connections', userAuth, async (req, res) => {
         .forEach((req) => {
           hideUsersFromFeed.add(req.fromUserId.toString());
           hideUsersFromFeed.add(req.toUserId.toString());
-        })
-        .select(safeData)
-        .skip(skip)
-        .limit(limit);
+        });
+
       console.log(hideUsersFromFeed);
       const user = await User.find({
         $and: [
           { _id: { $nin: Array.from(hideUsersFromFeed) } },
           { _id: { $ne: loggedInUser._id } },
         ],
-      });
+      }).skip(skip)
+        .limit(limit);
 
-      res.json({ data: user });
+
+      res.json({ data: user, page, limit });
     } catch (error) {
       res.send(error);
     }

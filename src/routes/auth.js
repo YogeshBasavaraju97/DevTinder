@@ -11,7 +11,7 @@ authRoutes.post("/signup", async (req, res) => {
   //validate the data
   try {
     validateSignUp(req);
-    const { firstName, lastName, emailId, password } = req.body;
+    const { firstName, lastName, emailId, password, photoURL, age, gender } = req.body;
 
     //decrypt the password
 
@@ -23,6 +23,9 @@ authRoutes.post("/signup", async (req, res) => {
       lastName,
       emailId,
       password: hashPassword,
+      photoURL,
+      age,
+      gender
     });
 
     //saving data to mongoDB
@@ -43,7 +46,7 @@ authRoutes.post("/login", async (req, res) => {
     //check the user if available in database
 
     const user = await User.findOne({ emailId: emailId });
-    console.log(user.password);
+
 
     if (!user) {
       throw new Error("invalid credentials");
