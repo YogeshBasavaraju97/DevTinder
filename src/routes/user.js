@@ -74,10 +74,10 @@ userRoutes.get('/user/connections', userAuth, async (req, res) => {
 
     try {
       const loggedInUser = req.user;
-      // ✅ Corrected limit definition
+
       const page = parseInt(req.query.page) || 1;
       const limit = Math.min(parseInt(req.query.limit) || 10, 50);
-      const skip = (page - 1) * limit; // ✅ Used correct limit variable
+      const skip = (page - 1) * limit;
 
       const hideConnections = await connectionRequests
         .find({
