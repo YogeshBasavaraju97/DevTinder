@@ -41,7 +41,7 @@ profileRoutes.patch("/profile/password", userAuth, async (req, res) => {
     validatePassword(req);
     const oldPassword = req.body.oldPassword;
     const loggedInUser = req.user;
-    console.log(loggedInUser.password);
+
 
     const isPasswordExists = await loggedInUser.verifyPassword(oldPassword);
     if (!isPasswordExists) {
