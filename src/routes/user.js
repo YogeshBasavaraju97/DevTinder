@@ -95,7 +95,7 @@ userRoutes.get('/user/connections', userAuth, async (req, res) => {
           hideUsersFromFeed.add(req.toUserId.toString());
         });
 
-      console.log(hideUsersFromFeed);
+
       const user = await User.find({
         $and: [
           { _id: { $nin: Array.from(hideUsersFromFeed) } },

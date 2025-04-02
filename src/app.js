@@ -1,5 +1,6 @@
-const express = require("express");
 
+const express = require("express");
+require("dotenv").config();
 const connectDB = require("./config/database");
 
 const app = express(); //middleware to body parser
@@ -27,9 +28,9 @@ app.use("/", user);
 connectDB()
   .then(() => {
     console.log("connection successfully established");
-    const PORT = 9999;
+    const PORT = process.env.PORT;
 
-    app.listen(9999, () => {
+    app.listen(PORT, () => {
       console.log("server successfully started");
     });
   })
